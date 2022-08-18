@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const Author = require('../models/author')
+const Book = require('../models/book')
 
-//All Authors Route
+//All Books Route
 router.get('/', async (req, res) => {
     let searchOptions = {}
     if(req.query.name !== null && req.query.name !== '') {
@@ -10,9 +10,9 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const authors = await Author.find(searchOptions)
-        res.render('authors/index', { 
-            authors: authors, 
+        const books = await Book.find(searchOptions)
+        res.render('books/index', { 
+            books: books, 
             searchOptions: req.query 
         })
     } catch (error) {
@@ -20,24 +20,25 @@ router.get('/', async (req, res) => {
     }
 })
 
-//New Author Route
+//New Books Route
 router.get('/new', (req, res) => {
-    res.render('authors/new', { author: new Author() })
+    res.render('books/new', { book: new Book() })
+
 })
 
-// Create Author Route
+// Create Books Route
 router.post('/', async (req, res) => {
-    const author = new Author({
-        name: req.body.name
+    book = new Book({
+        title: req.body.title
     })
     try {
-        const newAuthor = await author.save()
+        const newBook = await book.save()
         // res.redirect(`/authors/$(newAuthor.id)`)
-        res.redirect('authors')
+        res.redirect('books')
     } catch {
-        res.render('authors/new', {
-            author: author,
-            errorMessage: 'Error creating Author'
+        res.render('books/new', {
+            book: book,
+            errorMessage: 'Error creating book'
         })
     }
 })
